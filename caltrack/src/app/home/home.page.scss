@@ -47,9 +47,9 @@ ion-content {
   margin: 12px 0 14px;
   padding: 22px;
   border-radius: 28px;
-  background: linear-gradient(140deg, #173528 0%, #2f5a45 65%, #3a6b52 100%);
+  background: linear-gradient(140deg, #1b5e20 0%, #2e7d32 65%, #4caf50 100%);
   color: #fff;
-  box-shadow: 0 18px 40px rgba(23, 53, 40, 0.24);
+  box-shadow: 0 18px 40px rgba(27, 94, 32, 0.28);
 }
 
 .ring {
@@ -69,7 +69,7 @@ ion-content {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #1b3a2c;
+  background: #1b5e20;
 }
 
 .ring-value {
@@ -82,7 +82,7 @@ ion-content {
   margin-top: 4px;
   font-size: 0.62rem;
   letter-spacing: 0.04em;
-  color: #c9ddcf;
+  color: #c8e6c9;
 }
 
 .summary-copy {
@@ -96,7 +96,7 @@ ion-content {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #a9c9b6;
+  color: #a5d6a7;
 }
 
 .summary-value {
@@ -111,7 +111,7 @@ ion-content {
 
 .summary-unit {
   font-size: 0.72rem;
-  color: #c9ddcf;
+  color: #c8e6c9;
 }
 
 .macro-grid {
@@ -138,7 +138,7 @@ ion-content {
   font-size: 0.58rem;
   font-weight: 500;
   letter-spacing: 0.04em;
-  color: #a9c9b6;
+  color: #a5d6a7;
 }
 
 .status-row {
@@ -151,7 +151,7 @@ ion-content {
 .sync-chip {
   height: 28px;
   font-size: 0.7rem;
-  --background: rgba(242, 107, 58, 0.1);
+  --background: rgba(46, 125, 50, 0.1);
 }
 
 .entry-count {
@@ -191,7 +191,7 @@ ion-content {
   padding: 4px 0;
   border-radius: 20px;
   background: #fff;
-  box-shadow: 0 8px 24px rgba(31, 61, 47, 0.06);
+  box-shadow: 0 8px 24px rgba(27, 94, 32, 0.08);
 }
 
 .entry-item {
@@ -205,7 +205,7 @@ ion-content {
   height: 54px;
   overflow: hidden;
   border-radius: 16px;
-  background: #f1eee7;
+  background: #dcebdd;
 }
 
 .entry-item ion-thumbnail img {
@@ -219,7 +219,7 @@ ion-content {
   width: 100%;
   height: 100%;
   place-items: center;
-  color: #b3b7b2;
+  color: #90a4ae;
   font-size: 1.4rem;
 }
 
@@ -260,7 +260,7 @@ ion-content {
   border-radius: 16px;
   background: #fff;
   font-size: 0.76rem;
-  color: #a1a6a1;
+  color: #90a4ae;
 }
 
 .empty-meal ion-button {
@@ -277,7 +277,7 @@ ion-content {
   padding: 16px;
   border-radius: 22px;
   background: #fff;
-  box-shadow: 0 8px 24px rgba(31, 61, 47, 0.06);
+  box-shadow: 0 8px 24px rgba(27, 94, 32, 0.08);
 }
 
 .macro-head,
@@ -329,7 +329,7 @@ ion-content {
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: #f1eee7;
+  background: #dcebdd;
 }
 
 .macro-fill {
@@ -409,7 +409,7 @@ ion-content {
 .meal-count {
   padding: 1px 6px;
   border-radius: 999px;
-  background: rgba(47, 90, 69, 0.1);
+  background: rgba(46, 125, 50, 0.12);
   font-size: 0.6rem;
   font-weight: 700;
   color: var(--ion-color-secondary);
@@ -433,7 +433,7 @@ ion-content {
   margin: 0 4px 6px;
   overflow: hidden;
   border-radius: 999px;
-  background: #ece7dc;
+  background: #dcebdd;
 }
 
 .meal-progress-track span {
@@ -464,7 +464,7 @@ ion-content {
   border-radius: 24px;
   background: #fff;
   text-align: center;
-  box-shadow: 0 8px 24px rgba(31, 61, 47, 0.06);
+  box-shadow: 0 8px 24px rgba(27, 94, 32, 0.08);
 }
 
 .empty-icon {
@@ -474,7 +474,7 @@ ion-content {
   margin: 0 auto 12px;
   place-items: center;
   border-radius: 50%;
-  background: rgba(242, 107, 58, 0.12);
+  background: rgba(46, 125, 50, 0.12);
   color: var(--ion-color-primary);
   font-size: 1.8rem;
 }
@@ -493,7 +493,7 @@ ion-content {
 
 ion-fab-button {
   --background: var(--ion-color-primary);
-  --box-shadow: 0 10px 24px rgba(242, 107, 58, 0.35);
+  --box-shadow: 0 10px 24px rgba(46, 125, 50, 0.35);
 }
 
 .spin {

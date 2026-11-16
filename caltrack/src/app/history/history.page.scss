@@ -4,7 +4,7 @@ ion-content {
 
 .period-segment {
   margin-bottom: 14px;
-  --background: #ece7dc;
+  --background: #dcebdd;
   border-radius: 14px;
 }
 
@@ -20,9 +20,9 @@ ion-content {
 .hero-card {
   padding: 22px;
   border-radius: 28px;
-  background: linear-gradient(140deg, #173528 0%, #2f5a45 65%, #3a6b52 100%);
+  background: linear-gradient(140deg, #1b5e20 0%, #2e7d32 65%, #4caf50 100%);
   color: #fff;
-  box-shadow: 0 18px 40px rgba(23, 53, 40, 0.24);
+  box-shadow: 0 18px 40px rgba(27, 94, 32, 0.28);
 }
 
 .hero-top {
@@ -43,7 +43,7 @@ ion-content {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #a9c9b6;
+  color: #a5d6a7;
 }
 
 .hero-value {
@@ -55,13 +55,13 @@ ion-content {
 .hero-value small {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #c9ddcf;
+  color: #c8e6c9;
 }
 
 .hero-sub {
   margin-top: 2px;
   font-size: 0.72rem;
-  color: #c9ddcf;
+  color: #c8e6c9;
 }
 
 .hero-ring {
@@ -81,7 +81,7 @@ ion-content {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #1b3a2c;
+  background: #1b5e20;
 }
 
 .hero-ring-inner strong {
@@ -92,7 +92,7 @@ ion-content {
 .hero-ring-inner span {
   font-size: 0.54rem;
   letter-spacing: 0.04em;
-  color: #a9c9b6;
+  color: #a5d6a7;
 }
 
 .hero-stats {
@@ -118,7 +118,7 @@ ion-content {
 .hero-stat span {
   font-size: 0.6rem;
   letter-spacing: 0.03em;
-  color: #a9c9b6;
+  color: #a5d6a7;
 }
 
 .chart-card,
@@ -127,7 +127,7 @@ ion-content {
   padding: 18px;
   border-radius: 22px;
   background: #fff;
-  box-shadow: 0 8px 24px rgba(31, 61, 47, 0.06);
+  box-shadow: 0 8px 24px rgba(27, 94, 32, 0.08);
 }
 
 .card-head {
@@ -198,7 +198,7 @@ ion-content {
   width: 100%;
   min-height: 2px;
   border-radius: 6px 6px 3px 3px;
-  background: linear-gradient(180deg, #f69068 0%, var(--ion-color-primary) 100%);
+  background: linear-gradient(180deg, #66bb6a 0%, var(--ion-color-primary) 100%);
   transition: height 220ms ease;
 }
 
@@ -207,11 +207,11 @@ ion-content {
 }
 
 .bar.empty {
-  background: #ece7dc;
+  background: #dcebdd;
 }
 
 .bar-slot.today .bar {
-  box-shadow: 0 0 0 2px rgba(47, 90, 69, 0.25) inset;
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.25) inset;
 }
 
 .goal-line {
@@ -262,7 +262,7 @@ ion-content {
   height: 12px;
   overflow: hidden;
   border-radius: 999px;
-  background: #f1eee7;
+  background: #dcebdd;
 }
 
 .macro-seg {
@@ -327,7 +327,7 @@ ion-content {
   border-radius: 24px;
   background: #fff;
   text-align: center;
-  box-shadow: 0 8px 24px rgba(31, 61, 47, 0.06);
+  box-shadow: 0 8px 24px rgba(27, 94, 32, 0.08);
 }
 
 .empty-icon {
@@ -337,7 +337,7 @@ ion-content {
   margin: 0 auto 12px;
   place-items: center;
   border-radius: 50%;
-  background: rgba(242, 107, 58, 0.12);
+  background: rgba(46, 125, 50, 0.12);
   color: var(--ion-color-primary);
   font-size: 1.8rem;
 }
