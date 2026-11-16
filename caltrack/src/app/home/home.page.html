@@ -53,17 +53,17 @@
       <span class="summary-value" [class.over]="remaining() < 0">{{ remainingValue() }}</span>
       <span class="summary-unit">kcal · daily goal {{ goal() }}</span>
       <div class="macro-grid">
-        <div class="macro">
+        <div class="macro macro-protein">
           <ion-icon name="barbell-outline"></ion-icon>
           <span>{{ totals().protein }}g</span>
           <small>Protein</small>
         </div>
-        <div class="macro">
+        <div class="macro macro-carbs">
           <ion-icon name="leaf-outline"></ion-icon>
           <span>{{ totals().carbs }}g</span>
           <small>Carbs</small>
         </div>
-        <div class="macro">
+        <div class="macro macro-fat">
           <ion-icon name="flame-outline"></ion-icon>
           <span>{{ totals().fat }}g</span>
           <small>Fat</small>

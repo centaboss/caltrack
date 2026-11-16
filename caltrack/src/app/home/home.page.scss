@@ -82,7 +82,7 @@ ion-content {
   margin-top: 4px;
   font-size: 0.62rem;
   letter-spacing: 0.04em;
-  color: #c8e6c9;
+  color: #ffe0b2;
 }
 
 .summary-copy {
@@ -131,7 +131,19 @@ ion-content {
 .macro ion-icon {
   margin-bottom: 2px;
   font-size: 1rem;
-  color: #ffd4a8;
+  color: #fff3e0;
+}
+
+.macro-protein ion-icon {
+  color: #bbdefb;
+}
+
+.macro-carbs ion-icon {
+  color: #e1bee7;
+}
+
+.macro-fat ion-icon {
+  color: #fff59d;
 }
 
 .macro small {
@@ -184,7 +196,8 @@ ion-content {
 
 .meal-kcal {
   font-size: 0.72rem;
-  color: var(--ct-muted);
+  font-weight: 600;
+  color: var(--ion-color-calories);
 }
 
 .meal-list {
@@ -340,15 +353,15 @@ ion-content {
 }
 
 .macro-fill.fill-protein {
-  background: var(--ion-color-success);
+  background: var(--ion-color-protein);
 }
 
 .macro-fill.fill-carbs {
-  background: var(--ion-color-tertiary);
+  background: var(--ion-color-carbs);
 }
 
 .macro-fill.fill-fat {
-  background: var(--ion-color-primary);
+  background: var(--ion-color-fat);
 }
 
 .macro-value {
