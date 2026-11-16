@@ -57,14 +57,13 @@
             [class.active]="category() === cat.value"
             (click)="setCategory(cat.value)"
           >
-            {{ cat.emoji }} {{ cat.label }}
+            {{ cat.label }}
           </button>
         }
       </div>
       <div class="preset-scroll">
         @for (preset of filteredPresets(); track preset.name) {
           <button type="button" class="preset-chip" (click)="applyPreset(preset)">
-            <span class="preset-emoji">{{ preset.emoji }}</span>
             <span class="preset-name">{{ preset.name }}</span>
             <span class="preset-kcal">{{ preset.calories }} kcal</span>
           </button>
