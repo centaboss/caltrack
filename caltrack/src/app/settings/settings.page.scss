@@ -1,0 +1,88 @@
+ion-content {
+  --background: var(--ct-page-background);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(31, 61, 47, 0.06);
+}
+
+.card-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.card-heading ion-icon {
+  margin-top: 2px;
+  font-size: 1.3rem;
+  color: var(--ion-color-primary);
+}
+
+.card-heading h2 {
+  margin: 0 0 2px;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.card-heading p {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: var(--ct-muted);
+}
+
+.button-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.goal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.toggle-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --background: transparent;
+}
+
+.toggle-item ion-label {
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.sync-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  color: var(--ct-muted);
+}
+
+.about-copy {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.55;
+  color: var(--ct-muted);
+}
+
+.save-button {
+  height: 48px;
+  margin: 4px 0 12px;
+  --border-radius: 16px;
+}

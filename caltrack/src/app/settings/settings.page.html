@@ -1,0 +1,141 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form">
+    <section class="settings-card">
+      <div class="card-heading">
+        <ion-icon name="flame-outline"></ion-icon>
+        <div>
+          <h2>Daily target</h2>
+          <p>Set the calorie budget used on your dashboard.</p>
+        </div>
+      </div>
+      <ion-input
+        formControlName="dailyGoal"
+        type="number"
+        inputmode="numeric"
+        label="Calories per day"
+        labelPlacement="floating"
+        fill="outline"
+      ></ion-input>
+    </section>
+
+    <section class="settings-card">
+      <div class="card-heading">
+        <ion-icon name="barbell-outline"></ion-icon>
+        <div>
+          <h2>Macro &amp; water goals</h2>
+          <p>Track protein, carbs, fat and daily hydration against your targets.</p>
+        </div>
+      </div>
+      <div class="goal-grid">
+        <ion-input
+          formControlName="proteinGoal"
+          type="number"
+          inputmode="numeric"
+          label="Protein (g)"
+          labelPlacement="floating"
+          fill="outline"
+        ></ion-input>
+        <ion-input
+          formControlName="carbsGoal"
+          type="number"
+          inputmode="numeric"
+          label="Carbs (g)"
+          labelPlacement="floating"
+          fill="outline"
+        ></ion-input>
+        <ion-input
+          formControlName="fatGoal"
+          type="number"
+          inputmode="numeric"
+          label="Fat (g)"
+          labelPlacement="floating"
+          fill="outline"
+        ></ion-input>
+      </div>
+      <ion-input
+        formControlName="waterGoal"
+        type="number"
+        inputmode="numeric"
+        label="Water per day (ml)"
+        labelPlacement="floating"
+        fill="outline"
+      ></ion-input>
+    </section>
+
+    <section class="settings-card">
+      <div class="card-heading">
+        <ion-icon name="cloud-done-outline"></ion-icon>
+        <div>
+          <h2>REST API</h2>
+          <p>Use your computer's LAN IP when testing on a physical Android device.</p>
+        </div>
+      </div>
+      <ion-input
+        formControlName="apiBaseUrl"
+        label="API base URL"
+        labelPlacement="floating"
+        fill="outline"
+        placeholder="http://192.168.1.10:3000/api"
+      ></ion-input>
+      <div class="button-row">
+        <ion-button size="small" fill="outline" (click)="resetApi()">Reset default</ion-button>
+        <ion-button size="small" fill="outline" (click)="testConnection()">
+          <ion-icon slot="start" name="sync-outline"></ion-icon>
+          Test
+        </ion-button>
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <div class="card-heading">
+        <ion-icon name="barbell-outline"></ion-icon>
+        <div>
+          <h2>Device & data</h2>
+          <p>Haptics and offline sync controls.</p>
+        </div>
+      </div>
+      <ion-item lines="none" class="toggle-item">
+        <ion-label>Vibration feedback</ion-label>
+        <ion-toggle formControlName="hapticsEnabled"></ion-toggle>
+      </ion-item>
+      <div class="sync-info">
+        <span>{{ entryService.pendingCount() }} pending changes</span>
+        <ion-button size="small" (click)="syncNow()" [disabled]="entryService.syncing()"> Sync now </ion-button>
+      </div>
+      <ion-button expand="block" color="danger" fill="outline" (click)="clearCache()"> Clear local cache </ion-button>
+    </section>
+
+    <section class="settings-card about">
+      <div class="card-heading">
+        <ion-icon name="camera-outline"></ion-icon>
+        <div>
+          <h2>About CalTrack</h2>
+          <p>Camera-based calorie tracking with offline storage and REST sync.</p>
+        </div>
+      </div>
+      <p class="about-copy">
+        Built with Ionic Angular and Capacitor. Photos use the native camera, are stored with the Filesystem plugin, and
+        haptics provide vibration feedback. Entries are cached locally and synchronized with the CalTrack REST API.
+      </p>
+    </section>
+
+    <ion-button expand="block" type="button" class="save-button" (click)="saveSettings()"> Save settings </ion-button>
+  </form>
+</ion-content>
+
+<ion-toast
+  [isOpen]="toastOpen()"
+  [message]="toastMessage()"
+  [color]="toastColor()"
+  [duration]="2600"
+  (didDismiss)="toastOpen.set(false)"
+></ion-toast>

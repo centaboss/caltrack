@@ -1,0 +1,140 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Insights</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-segment [value]="period()" (ionChange)="onPeriodChange($event)" class="period-segment">
+    <ion-segment-button value="7">
+      <ion-label>7 days</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="30">
+      <ion-label>30 days</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <section class="hero-card">
+    <div class="hero-top">
+      <div class="hero-copy">
+        <span class="hero-kicker">Average intake</span>
+        <div class="hero-value">{{ summary().averageCalories }}<small> kcal</small></div>
+        <span class="hero-sub">
+          {{ periodLabel() }} · {{ summary().loggedDays }} of {{ summary().days }} days logged
+        </span>
+      </div>
+      <div class="hero-ring" [style.background]="adherenceGradient()">
+        <div class="hero-ring-inner">
+          <strong>{{ summary().adherencePercent }}%</strong>
+          <span>on target</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>{{ summary().onTargetDays }}</strong>
+        <span>within goal</span>
+      </div>
+      <div class="hero-stat">
+        <strong>{{ summary().totalCalories }}</strong>
+        <span>total kcal</span>
+      </div>
+      <div class="hero-stat">
+        <strong>{{ summary().peakCalories }}</strong>
+        <span>peak day</span>
+      </div>
+    </div>
+  </section>
+
+  @if (!hasData()) {
+  <section class="empty-state">
+    <div class="empty-icon">
+      <ion-icon name="bar-chart-outline"></ion-icon>
+    </div>
+    <h2>No meals in this period</h2>
+    <p>Log meals for a few days and your calorie trends and macro split will appear here.</p>
+    <ion-button (click)="goHome()">
+      <ion-icon slot="start" name="restaurant-outline"></ion-icon>
+      Log a meal
+    </ion-button>
+  </section>
+  } @else {
+  <section class="chart-card">
+    <div class="card-head">
+      <div>
+        <h2>Daily calories</h2>
+        <p>{{ periodLabel() }} · goal {{ goal() }} kcal</p>
+      </div>
+      <span class="legend"><i></i> Over goal</span>
+    </div>
+
+    <div class="chart">
+      <div class="plot">
+        <div class="goal-line" [style.bottom.%]="goalLine()">
+          <span>Goal {{ goal() }}</span>
+        </div>
+        <div class="bars">
+          @for (day of series(); track day.dateKey) {
+          <div class="bar-slot" [class.today]="day.dateKey === today">
+            <div
+              class="bar"
+              [class.over]="isOver(day)"
+              [class.empty]="day.totals.count === 0"
+              [style.height.%]="barHeight(day)"
+              [title]="day.dateKey + ': ' + day.totals.calories + ' kcal'"
+            ></div>
+          </div>
+          }
+        </div>
+      </div>
+      <div class="labels">
+        @for (day of series(); track day.dateKey) {
+        <span class="bar-label" [class.hidden]="!day.showLabel" [class.today]="day.dateKey === today">
+          {{ day.label }}
+        </span>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="macro-card">
+    <div class="card-head">
+      <div>
+        <h2>Macro split</h2>
+        <p>{{ summary().totals.count }} meals · {{ summary().totals.calories }} kcal</p>
+      </div>
+      <ion-icon name="pie-chart-outline"></ion-icon>
+    </div>
+
+    <div class="macro-bar">
+      <span class="macro-seg protein" [style.width.%]="summary().macros.protein"></span>
+      <span class="macro-seg carbs" [style.width.%]="summary().macros.carbs"></span>
+      <span class="macro-seg fat" [style.width.%]="summary().macros.fat"></span>
+    </div>
+
+    <div class="macro-rows">
+      <div class="macro-row">
+        <span class="dot protein"></span>
+        <span class="macro-name">Protein</span>
+        <span class="macro-grams">{{ summary().totals.protein }} g</span>
+        <span class="macro-percent">{{ summary().macros.protein }}%</span>
+      </div>
+      <div class="macro-row">
+        <span class="dot carbs"></span>
+        <span class="macro-name">Carbs</span>
+        <span class="macro-grams">{{ summary().totals.carbs }} g</span>
+        <span class="macro-percent">{{ summary().macros.carbs }}%</span>
+      </div>
+      <div class="macro-row">
+        <span class="dot fat"></span>
+        <span class="macro-name">Fat</span>
+        <span class="macro-grams">{{ summary().totals.fat }} g</span>
+        <span class="macro-percent">{{ summary().macros.fat }}%</span>
+      </div>
+    </div>
+  </section>
+  }
+</ion-content>

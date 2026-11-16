@@ -1,0 +1,7 @@
+{
+  "name": "calrack",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

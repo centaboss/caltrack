@@ -1,0 +1,258 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>CalTrack</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openHistory()" aria-label="Insights">
+        <ion-icon slot="icon-only" name="bar-chart-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="syncNow()" [disabled]="entryService.syncing()" aria-label="Sync now">
+        <ion-icon slot="icon-only" name="sync-outline" [class.spin]="entryService.syncing()"></ion-icon>
+      </ion-button>
+      <ion-button (click)="openSettings()" aria-label="Settings">
+        <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">CalTrack</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="date-row">
+    <ion-button fill="clear" (click)="shiftDay(-1)" aria-label="Previous day">
+      <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+    </ion-button>
+    <button type="button" class="date-label" (click)="datePickerOpen.set(true)">
+      <span class="date-main">{{ friendly() }}</span>
+      <span class="date-sub">{{ long() }}</span>
+    </button>
+    <ion-button fill="clear" (click)="shiftDay(1)" aria-label="Next day">
+      <ion-icon slot="icon-only" name="chevron-forward"></ion-icon>
+    </ion-button>
+  </div>
+
+  @if (!isToday()) {
+  <div class="today-row">
+    <ion-chip color="primary" (click)="goToday()">Back to today</ion-chip>
+  </div>
+  }
+
+  <div class="summary-card">
+    <div class="ring" [style.background]="ringGradient()">
+      <div class="ring-inner">
+        <span class="ring-value">{{ totals().calories }}</span>
+        <span class="ring-label">kcal eaten</span>
+      </div>
+    </div>
+    <div class="summary-copy">
+      <span class="summary-kicker">{{ remainingLabel() }}</span>
+      <span class="summary-value" [class.over]="remaining() < 0">{{ remainingValue() }}</span>
+      <span class="summary-unit">kcal · daily goal {{ goal() }}</span>
+      <div class="macro-grid">
+        <div class="macro">
+          <ion-icon name="barbell-outline"></ion-icon>
+          <span>{{ totals().protein }}g</span>
+          <small>Protein</small>
+        </div>
+        <div class="macro">
+          <ion-icon name="leaf-outline"></ion-icon>
+          <span>{{ totals().carbs }}g</span>
+          <small>Carbs</small>
+        </div>
+        <div class="macro">
+          <ion-icon name="flame-outline"></ion-icon>
+          <span>{{ totals().fat }}g</span>
+          <small>Fat</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="status-row">
+    <ion-chip [color]="syncColor()" class="sync-chip" (click)="syncNow()">
+      <ion-icon [name]="syncIcon()"></ion-icon>
+      <ion-label>{{ syncLabel() }}</ion-label>
+    </ion-chip>
+    <span class="entry-count">{{ totals().count }} meals</span>
+  </div>
+
+  <section class="macro-card">
+    <div class="macro-head">
+      <div>
+        <h2>Macro goals</h2>
+        <p>{{ totals().count }} meals · {{ totals().calories }} kcal</p>
+      </div>
+      <ion-icon name="pie-chart-outline"></ion-icon>
+    </div>
+    <div class="macro-rows">
+      @for (macro of macroStats(); track macro.key) {
+      <div class="macro-row">
+        <span class="macro-name">{{ macro.label }}</span>
+        <div class="macro-track">
+          <span [class]="'macro-fill fill-' + macro.key" [style.width.%]="macro.percent"></span>
+        </div>
+        <span class="macro-value">{{ macro.value }}/{{ macro.goal }} g</span>
+      </div>
+      }
+    </div>
+  </section>
+
+  <section class="water-card">
+    <div class="water-head">
+      <div class="water-title">
+        <ion-icon name="water-outline"></ion-icon>
+        <span>Water</span>
+      </div>
+      <span class="water-value">{{ waterLiters() }} L / {{ waterGoalLiters() }} L</span>
+    </div>
+    <div class="water-track">
+      <span [style.width.%]="waterPercent()"></span>
+    </div>
+    <div class="water-actions">
+      <ion-button fill="clear" size="small" (click)="removeWater(250)" aria-label="Remove 250 ml">
+        <ion-icon slot="icon-only" name="remove"></ion-icon>
+      </ion-button>
+      <span class="water-ml">{{ waterIntake() }} ml</span>
+      <ion-button fill="solid" size="small" (click)="addWater(250)">
+        <ion-icon slot="start" name="add"></ion-icon>
+        250 ml
+      </ion-button>
+      <ion-button fill="outline" size="small" (click)="addWater(500)">500 ml</ion-button>
+    </div>
+  </section>
+
+  @if (totals().count === 0) {
+  <div class="empty-state">
+    <div class="empty-icon">
+      <ion-icon name="camera-outline"></ion-icon>
+    </div>
+    <h2>No meals logged yet</h2>
+    <p>Snap a photo of your food, add the calories, and keep your day on track.</p>
+    <ion-button (click)="openAdd()">
+      <ion-icon slot="start" name="camera"></ion-icon>
+      Log a meal
+    </ion-button>
+  </div>
+  } @else { @for (meal of meals; track meal.value) {
+  <section class="meal-section">
+    @let stats = mealTotals(meal.value);
+    <div class="meal-header">
+      <div class="meal-title">
+        <ion-icon [name]="meal.icon"></ion-icon>
+        <span>{{ meal.label }}</span>
+        <small class="meal-count">{{ stats.count }}</small>
+      </div>
+      <div class="meal-header-end">
+        <span class="meal-kcal">{{ stats.calories }} / {{ mealTarget(meal.value) }} kcal</span>
+        <ion-button fill="clear" size="small" (click)="openAddForMeal(meal.value)" aria-label="Add to {{ meal.label }}">
+          <ion-icon slot="icon-only" name="add"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+
+    <div class="meal-progress-track">
+      <span [style.width.%]="mealPercent(meal.value)"></span>
+    </div>
+    <div class="meal-macros">
+      <span class="meal-macro">P {{ stats.protein }}g</span>
+      <span class="meal-macro">C {{ stats.carbs }}g</span>
+      <span class="meal-macro">F {{ stats.fat }}g</span>
+      <span class="meal-macro meal-target">{{ mealPercent(meal.value) }}% of target</span>
+    </div>
+
+    @if (stats.count > 0) {
+    <ion-list lines="none" class="meal-list">
+      @for (entry of mealEntries(meal.value); track entry.id) {
+      <ion-item-sliding>
+        <ion-item button class="entry-item" (click)="editEntry(entry)">
+          <ion-thumbnail slot="start">
+            @if (entry.photo) {
+            <img [src]="photoUrl(entry.photo)" [alt]="entry.name" />
+            } @else {
+            <div class="thumb-placeholder">
+              <ion-icon name="restaurant-outline"></ion-icon>
+            </div>
+            }
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{ entry.name }}</h2>
+            <p>
+              {{ entry.calories }} kcal @if (entry.notes) {
+              <span>· {{ entry.notes }}</span>
+              }
+            </p>
+          </ion-label>
+          <div slot="end" class="entry-end">
+            <ion-note>{{ time(entry.consumedAt) }}</ion-note>
+            @if (!entry.synced) {
+            <ion-badge color="warning">Offline</ion-badge>
+            }
+          </div>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="primary" (click)="editEntry(entry)">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="confirmDelete(entry)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+      }
+    </ion-list>
+    } @else {
+    <div class="empty-meal">
+      <span>Nothing logged</span>
+      <ion-button fill="clear" size="small" (click)="openAddForMeal(meal.value)">
+        <ion-icon slot="start" name="add"></ion-icon>
+        Add food
+      </ion-button>
+    </div>
+    }
+  </section>
+  } }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="openAdd()" aria-label="Log a meal">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-modal [isOpen]="datePickerOpen()" (didDismiss)="datePickerOpen.set(false)">
+  <ng-template>
+    <ion-datetime
+      presentation="date"
+      [value]="selectedDate()"
+      [showDefaultButtons]="true"
+      (ionChange)="onDateChange($event)"
+      (ionCancel)="datePickerOpen.set(false)"
+      (ionConfirm)="datePickerOpen.set(false)"
+    ></ion-datetime>
+  </ng-template>
+</ion-modal>
+
+<ion-modal [isOpen]="formOpen()" (didDismiss)="closeForm()">
+  <ng-template>
+    <app-entry-form
+      class="ion-page"
+      [entry]="editingEntry()"
+      [date]="selectedDate()"
+      [defaultMeal]="presetMeal()"
+      (saved)="onSaved($event)"
+      (cancelled)="closeForm()"
+    ></app-entry-form>
+  </ng-template>
+</ion-modal>
+
+<ion-toast
+  [isOpen]="toastOpen()"
+  [message]="toastMessage()"
+  [color]="toastColor()"
+  [duration]="2600"
+  (didDismiss)="toastOpen.set(false)"
+></ion-toast>

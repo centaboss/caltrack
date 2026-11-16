@@ -1,0 +1,147 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()" aria-label="Close">
+        <ion-icon slot="icon-only" name="close-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ entry() ? 'Edit meal' : 'Log a meal' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="photo-card">
+      @if (photo()) {
+        <img [src]="displayUrl(photo())" alt="Meal photo" />
+        <div class="photo-actions">
+          <ion-button size="small" fill="solid" (click)="capturePhoto()" [disabled]="capturing()">
+            <ion-icon slot="start" name="camera-outline"></ion-icon>
+            Retake
+          </ion-button>
+          <ion-button size="small" fill="solid" color="danger" (click)="removePhoto()">
+            <ion-icon slot="start" name="trash-outline"></ion-icon>
+            Remove
+          </ion-button>
+        </div>
+      } @else {
+        <button type="button" class="photo-placeholder" (click)="capturePhoto()" [disabled]="capturing()">
+          <ion-icon name="camera-outline"></ion-icon>
+          <strong>{{ capturing() ? 'Opening camera…' : 'Take a meal photo' }}</strong>
+          <span>Uses your device camera</span>
+        </button>
+      }
+    </div>
+
+    @if (error()) {
+      <ion-note color="danger" class="error-note">{{ error() }}</ion-note>
+    }
+
+    <div class="preset-block">
+      <div class="section-label">Quick add</div>
+      <ion-searchbar
+        placeholder="Search foods"
+        [debounce]="120"
+        [animated]="true"
+        (ionInput)="onSearch($event)"
+        class="food-search"
+      ></ion-searchbar>
+      <div class="category-scroll">
+        <button type="button" class="category-chip" [class.active]="category() === 'all'" (click)="setCategory('all')">
+          All
+        </button>
+        @for (cat of categories; track cat.value) {
+          <button
+            type="button"
+            class="category-chip"
+            [class.active]="category() === cat.value"
+            (click)="setCategory(cat.value)"
+          >
+            {{ cat.emoji }} {{ cat.label }}
+          </button>
+        }
+      </div>
+      <div class="preset-scroll">
+        @for (preset of filteredPresets(); track preset.name) {
+          <button type="button" class="preset-chip" (click)="applyPreset(preset)">
+            <span class="preset-emoji">{{ preset.emoji }}</span>
+            <span class="preset-name">{{ preset.name }}</span>
+            <span class="preset-kcal">{{ preset.calories }} kcal</span>
+          </button>
+        }
+        @if (filteredPresets().length === 0) {
+          <div class="preset-empty">No foods match your search.</div>
+        }
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <ion-input
+        formControlName="name"
+        label="Food name"
+        labelPlacement="floating"
+        fill="outline"
+        placeholder="e.g. Chicken salad"
+        class="span-2"
+      ></ion-input>
+
+      <ion-input
+        formControlName="calories"
+        type="number"
+        inputmode="numeric"
+        label="Calories"
+        labelPlacement="floating"
+        fill="outline"
+      ></ion-input>
+
+      <ion-select formControlName="meal" label="Meal" labelPlacement="floating" fill="outline" interface="popover">
+        @for (meal of meals; track meal.value) {
+          <ion-select-option [value]="meal.value">{{ meal.label }}</ion-select-option>
+        }
+      </ion-select>
+
+      <ion-input
+        formControlName="protein"
+        type="number"
+        inputmode="decimal"
+        label="Protein (g)"
+        labelPlacement="floating"
+        fill="outline"
+      ></ion-input>
+
+      <ion-input
+        formControlName="carbs"
+        type="number"
+        inputmode="decimal"
+        label="Carbs (g)"
+        labelPlacement="floating"
+        fill="outline"
+      ></ion-input>
+
+      <ion-input
+        formControlName="fat"
+        type="number"
+        inputmode="decimal"
+        label="Fat (g)"
+        labelPlacement="floating"
+        fill="outline"
+        class="span-2"
+      ></ion-input>
+
+      <ion-textarea
+        formControlName="notes"
+        label="Notes"
+        labelPlacement="floating"
+        fill="outline"
+        [autoGrow]="true"
+        placeholder="Portion, restaurant, how you felt…"
+        class="span-2"
+      ></ion-textarea>
+    </div>
+
+    <ion-button expand="block" type="submit" class="save-button" [disabled]="form.invalid">
+      <ion-icon slot="start" name="checkmark-circle"></ion-icon>
+      {{ entry() ? 'Save changes' : 'Log meal' }}
+    </ion-button>
+  </form>
+</ion-content>
