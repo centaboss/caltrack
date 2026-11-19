@@ -50,6 +50,7 @@ export class EntryFormComponent {
   readonly date = input.required<string>();
   readonly defaultMeal = input<MealType | null>(null);
   readonly saved = output<FoodEntryDraft>();
+  readonly deleted = output<FoodEntry>();
   readonly cancelled = output<void>();
 
   private readonly fb = inject(FormBuilder);
@@ -185,6 +186,13 @@ export class EntryFormComponent {
       photo: value.photo,
       consumedAt: this.combineDateAndTime(this.date(), value.consumedAt),
     });
+  }
+
+  deleteEntry(): void {
+    const entry = this.entry();
+    if (entry) {
+      this.deleted.emit(entry);
+    }
   }
 
   cancel(): void {

@@ -244,6 +244,7 @@
       [date]="selectedDate()"
       [defaultMeal]="presetMeal()"
       (saved)="onSaved($event)"
+      (deleted)="confirmDelete($event)"
       (cancelled)="closeForm()"
     ></app-entry-form>
   </ng-template>

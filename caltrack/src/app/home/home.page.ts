@@ -286,6 +286,9 @@ export class HomePage {
 
   private async deleteEntry(entry: FoodEntry): Promise<void> {
     await this.entryService.remove(entry.id);
+    if (this.editingEntry()?.id === entry.id) {
+      this.closeForm();
+    }
     void this.feedback.warning();
     this.showToast('Meal deleted', 'medium');
   }

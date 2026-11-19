@@ -6,6 +6,13 @@
       </ion-button>
     </ion-buttons>
     <ion-title>{{ entry() ? 'Edit meal' : 'Log a meal' }}</ion-title>
+    <ion-buttons slot="end">
+      @if (entry()) {
+        <ion-button (click)="deleteEntry()" aria-label="Delete meal" color="danger" fill="clear">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      }
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -142,5 +149,19 @@
       <ion-icon slot="start" name="checkmark-circle"></ion-icon>
       {{ entry() ? 'Save changes' : 'Log meal' }}
     </ion-button>
+
+    @if (entry()) {
+      <ion-button
+        expand="block"
+        fill="outline"
+        color="danger"
+        type="button"
+        class="delete-button"
+        (click)="deleteEntry()"
+      >
+        <ion-icon slot="start" name="trash-outline"></ion-icon>
+        Delete meal
+      </ion-button>
+    }
   </form>
 </ion-content>
