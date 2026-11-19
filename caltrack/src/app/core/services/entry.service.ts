@@ -23,6 +23,7 @@ function normalize(entry: FoodEntry): FoodEntry {
     protein: Number(entry.protein) || 0,
     carbs: Number(entry.carbs) || 0,
     fat: Number(entry.fat) || 0,
+    servings: Math.max(1, Math.round(Number(entry.servings) || 1)),
     notes: entry.notes ?? '',
     photo: entry.photo ?? '',
     synced: entry.synced ?? true,
@@ -92,6 +93,7 @@ export class EntryService {
       protein: Number(draft.protein) || 0,
       carbs: Number(draft.carbs) || 0,
       fat: Number(draft.fat) || 0,
+      servings: Math.max(1, Math.round(Number(draft.servings) || 1)),
       createdAt: now,
       updatedAt: now,
       synced: false,
@@ -116,6 +118,7 @@ export class EntryService {
               protein: Number(draft.protein) || 0,
               carbs: Number(draft.carbs) || 0,
               fat: Number(draft.fat) || 0,
+              servings: Math.max(1, Math.round(Number(draft.servings) || 1)),
               updatedAt: now,
               synced: false,
             })
@@ -136,6 +139,59 @@ export class EntryService {
 
     await this.persist();
     void this.sync();
+  }
+
+  async incrementServings(id: string): Promise<void> {
+    const entry = this.entries().find((item) => item.id === id && !item.deleted);
+    if (!entry) return;
+
+    const oldServings = Math.max(1, entry.servings || 1);
+    const newServings = oldServings + 1;
+    const scale = newServings / oldServings;
+
+    const draft: FoodEntryDraft = {
+      name: entry.name,
+      calories: Math.round(entry.calories * scale),
+      protein: Math.round(entry.protein * scale * 10) / 10,
+      carbs: Math.round(entry.carbs * scale * 10) / 10,
+      fat: Math.round(entry.fat * scale * 10) / 10,
+      servings: newServings,
+      meal: entry.meal,
+      notes: entry.notes,
+      photo: entry.photo,
+      consumedAt: entry.consumedAt,
+    };
+
+    await this.update(id, draft);
+  }
+
+  async decrementServings(id: string): Promise<void> {
+    const entry = this.entries().find((item) => item.id === id && !item.deleted);
+    if (!entry) return;
+
+    const oldServings = Math.max(1, entry.servings || 1);
+    if (oldServings <= 1) {
+      await this.remove(id);
+      return;
+    }
+
+    const newServings = oldServings - 1;
+    const scale = newServings / oldServings;
+
+    const draft: FoodEntryDraft = {
+      name: entry.name,
+      calories: Math.round(entry.calories * scale),
+      protein: Math.round(entry.protein * scale * 10) / 10,
+      carbs: Math.round(entry.carbs * scale * 10) / 10,
+      fat: Math.round(entry.fat * scale * 10) / 10,
+      servings: newServings,
+      meal: entry.meal,
+      notes: entry.notes,
+      photo: entry.photo,
+      consumedAt: entry.consumedAt,
+    };
+
+    await this.update(id, draft);
   }
 
   sync(): Promise<SyncResult> {

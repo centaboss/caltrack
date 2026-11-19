@@ -77,10 +77,11 @@ export class EntryFormComponent {
 
   readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
-    calories: [0, [Validators.required, Validators.min(0), Validators.max(5000)]],
-    protein: [0, [Validators.min(0), Validators.max(500)]],
-    carbs: [0, [Validators.min(0), Validators.max(1000)]],
-    fat: [0, [Validators.min(0), Validators.max(500)]],
+    calories: [0, [Validators.required, Validators.min(0), Validators.max(50000)]],
+    protein: [0, [Validators.min(0), Validators.max(5000)]],
+    carbs: [0, [Validators.min(0), Validators.max(10000)]],
+    fat: [0, [Validators.min(0), Validators.max(5000)]],
+    servings: [1, [Validators.required, Validators.min(1), Validators.max(50)]],
     meal: ['breakfast' as MealType, Validators.required],
     notes: [''],
     photo: [''],
@@ -99,6 +100,7 @@ export class EntryFormComponent {
           protein: entry.protein,
           carbs: entry.carbs,
           fat: entry.fat,
+          servings: entry.servings ?? 1,
           meal: entry.meal,
           notes: entry.notes,
           photo: entry.photo,
@@ -112,6 +114,7 @@ export class EntryFormComponent {
           protein: 0,
           carbs: 0,
           fat: 0,
+          servings: 1,
           meal: this.defaultMeal() ?? this.mealForNow(),
           notes: '',
           photo: '',
@@ -157,13 +160,35 @@ export class EntryFormComponent {
     void this.feedback.tap();
   }
 
+  adjustFormServings(delta: number): void {
+    const current = Math.max(1, this.form.controls.servings.value || 1);
+    const next = Math.max(1, current + delta);
+    if (next === current) return;
+
+    const scale = next / current;
+    const c = Math.round((Number(this.form.controls.calories.value) || 0) * scale);
+    const p = Math.round((Number(this.form.controls.protein.value) || 0) * scale * 10) / 10;
+    const carbs = Math.round((Number(this.form.controls.carbs.value) || 0) * scale * 10) / 10;
+    const f = Math.round((Number(this.form.controls.fat.value) || 0) * scale * 10) / 10;
+
+    this.form.patchValue({
+      servings: next,
+      calories: c,
+      protein: p,
+      carbs: carbs,
+      fat: f,
+    });
+    void this.feedback.tap();
+  }
+
   applyPreset(preset: FoodPreset): void {
+    const servings = Math.max(1, this.form.controls.servings.value || 1);
     this.form.patchValue({
       name: preset.name,
-      calories: preset.calories,
-      protein: preset.protein,
-      carbs: preset.carbs,
-      fat: preset.fat,
+      calories: preset.calories * servings,
+      protein: preset.protein * servings,
+      carbs: preset.carbs * servings,
+      fat: preset.fat * servings,
     });
     void this.feedback.tap();
   }
@@ -181,6 +206,7 @@ export class EntryFormComponent {
       protein: Number(value.protein) || 0,
       carbs: Number(value.carbs) || 0,
       fat: Number(value.fat) || 0,
+      servings: Number(value.servings) || 1,
       meal: value.meal,
       notes: value.notes.trim(),
       photo: value.photo,

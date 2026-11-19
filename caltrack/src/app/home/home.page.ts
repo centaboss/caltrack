@@ -248,6 +248,20 @@ export class HomePage {
     void this.feedback.tap();
   }
 
+  async incrementEntry(entry: FoodEntry): Promise<void> {
+    await this.entryService.incrementServings(entry.id);
+    void this.feedback.tap();
+  }
+
+  async decrementEntry(entry: FoodEntry): Promise<void> {
+    if ((entry.servings || 1) <= 1) {
+      await this.confirmDelete(entry);
+    } else {
+      await this.entryService.decrementServings(entry.id);
+      void this.feedback.tap();
+    }
+  }
+
   closeForm(): void {
     this.formOpen.set(false);
     this.editingEntry.set(null);

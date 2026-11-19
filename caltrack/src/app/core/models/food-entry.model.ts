@@ -7,6 +7,7 @@ export interface FoodEntry {
   protein: number;
   carbs: number;
   fat: number;
+  servings?: number;
   meal: MealType;
   notes: string;
   photo: string;
@@ -23,6 +24,7 @@ export interface FoodEntryDraft {
   protein: number;
   carbs: number;
   fat: number;
+  servings?: number;
   meal: MealType;
   notes: string;
   photo: string;

@@ -1,6 +1,7 @@
 import { addIcons } from 'ionicons';
 import {
   add,
+  addCircleOutline,
   barbellOutline,
   barChartOutline,
   cafeOutline,
@@ -22,6 +23,7 @@ import {
   nutritionOutline,
   pieChartOutline,
   remove,
+  removeCircleOutline,
   restaurantOutline,
   settingsOutline,
   sunnyOutline,
@@ -32,6 +34,7 @@ import {
 
 addIcons({
   add,
+  'add-circle-outline': addCircleOutline,
   'barbell-outline': barbellOutline,
   'bar-chart-outline': barChartOutline,
   'cafe-outline': cafeOutline,
@@ -53,6 +56,7 @@ addIcons({
   'nutrition-outline': nutritionOutline,
   'pie-chart-outline': pieChartOutline,
   remove,
+  'remove-circle-outline': removeCircleOutline,
   'restaurant-outline': restaurantOutline,
   'settings-outline': settingsOutline,
   'sunny-outline': sunnyOutline,

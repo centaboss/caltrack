@@ -91,6 +91,22 @@
         class="span-2"
       ></ion-input>
 
+      <div class="servings-row span-2">
+        <div class="servings-info">
+          <span class="servings-title">Servings / Quantity</span>
+          <span class="servings-subtitle">{{ form.controls.servings.value }} {{ form.controls.servings.value === 1 ? 'meal / portion' : 'meals / portions' }}</span>
+        </div>
+        <div class="servings-picker">
+          <ion-button fill="outline" size="small" type="button" (click)="adjustFormServings(-1)" [disabled]="form.controls.servings.value <= 1">
+            <ion-icon slot="icon-only" name="remove"></ion-icon>
+          </ion-button>
+          <span class="servings-num">{{ form.controls.servings.value }}x</span>
+          <ion-button fill="outline" size="small" type="button" (click)="adjustFormServings(1)">
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+
       <ion-input
         formControlName="calories"
         type="number"

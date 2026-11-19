@@ -237,8 +237,20 @@ ion-content {
 }
 
 .entry-item h2 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.92rem;
   font-weight: 700;
+}
+
+.servings-badge {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--ion-color-secondary);
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #fff;
 }
 
 .entry-item p {
@@ -251,6 +263,51 @@ ion-content {
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
+}
+
+.entry-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 1px 4px;
+  border-radius: 999px;
+  background: rgba(46, 125, 50, 0.08);
+}
+
+.qty-btn {
+  --padding-start: 2px;
+  --padding-end: 2px;
+  height: 28px;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.qty-count {
+  min-width: 14px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--ion-color-primary);
+}
+
+.delete-btn {
+  --padding-start: 4px;
+  --padding-end: 4px;
+  height: 28px;
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.entry-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .entry-end ion-note {

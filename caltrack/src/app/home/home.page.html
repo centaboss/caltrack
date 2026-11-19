@@ -179,7 +179,12 @@
             }
           </ion-thumbnail>
           <ion-label>
-            <h2>{{ entry.name }}</h2>
+            <h2>
+              {{ entry.name }}
+              @if ((entry.servings || 1) > 1) {
+                <span class="servings-badge">{{ entry.servings }}x</span>
+              }
+            </h2>
             <p>
               {{ entry.calories }} kcal @if (entry.notes) {
               <span>· {{ entry.notes }}</span>
@@ -187,10 +192,26 @@
             </p>
           </ion-label>
           <div slot="end" class="entry-end">
-            <ion-note>{{ time(entry.consumedAt) }}</ion-note>
-            @if (!entry.synced) {
-            <ion-badge color="warning">Offline</ion-badge>
-            }
+            <div class="entry-actions" (click)="$event.stopPropagation()">
+              <div class="qty-control">
+                <ion-button fill="clear" size="small" class="qty-btn" (click)="decrementEntry(entry)" aria-label="Decrease portion">
+                  <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+                </ion-button>
+                <span class="qty-count">{{ entry.servings || 1 }}</span>
+                <ion-button fill="clear" size="small" class="qty-btn" (click)="incrementEntry(entry)" aria-label="Increase portion">
+                  <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+                </ion-button>
+              </div>
+              <ion-button fill="clear" color="danger" size="small" class="delete-btn" (click)="confirmDelete(entry)" aria-label="Delete meal">
+                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+              </ion-button>
+            </div>
+            <div class="entry-meta">
+              <ion-note>{{ time(entry.consumedAt) }}</ion-note>
+              @if (!entry.synced) {
+              <ion-badge color="warning">Offline</ion-badge>
+              }
+            </div>
           </div>
         </ion-item>
         <ion-item-options side="end">
