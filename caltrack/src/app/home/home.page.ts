@@ -120,10 +120,14 @@ export class HomePage {
       { key: 'protein', label: 'Protein', value: totals.protein, goal: this.settings.proteinGoal() },
       { key: 'carbs', label: 'Carbs', value: totals.carbs, goal: this.settings.carbsGoal() },
       { key: 'fat', label: 'Fat', value: totals.fat, goal: this.settings.fatGoal() },
-    ].map((macro) => ({
-      ...macro,
-      percent: macro.goal > 0 ? Math.min(100, Math.round((macro.value / macro.goal) * 100)) : 0,
-    }));
+    ].map((macro) => {
+      const remaining = Math.max(0, macro.goal - macro.value);
+      return {
+        ...macro,
+        remaining,
+        percent: macro.goal > 0 ? Math.min(100, Math.round((macro.value / macro.goal) * 100)) : 0,
+      };
+    });
   });
   readonly waterIntake = computed(() => this.water.amountFor(this.selectedDate()));
   readonly waterGoal = computed(() => this.settings.waterGoal());

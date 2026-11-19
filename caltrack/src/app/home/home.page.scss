@@ -423,9 +423,18 @@ ion-content {
 
 .macro-value {
   flex: 0 0 auto;
-  min-width: 76px;
+  min-width: 105px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   text-align: right;
   color: var(--ct-muted);
+}
+
+.macro-rem {
+  font-size: 0.64rem;
+  font-weight: 600;
+  color: var(--ion-color-secondary);
 }
 
 .water-title {

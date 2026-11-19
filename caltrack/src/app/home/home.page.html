@@ -95,7 +95,10 @@
         <div class="macro-track">
           <span [class]="'macro-fill fill-' + macro.key" [style.width.%]="macro.percent"></span>
         </div>
-        <span class="macro-value">{{ macro.value }}/{{ macro.goal }} g</span>
+        <span class="macro-value">
+          <strong>{{ macro.value }}/{{ macro.goal }}g</strong>
+          <small class="macro-rem">({{ macro.remaining }}g left)</small>
+        </span>
       </div>
       }
     </div>
