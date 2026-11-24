@@ -1,22 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
 import { firstValueFrom } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 
 import type { FoodEntry } from '../models/food-entry.model';
 
-import { SettingsService } from './settings.service';
-
 type EntryPayload = Omit<FoodEntry, 'synced' | 'deleted'>;
+
+function defaultApiBaseUrl(): string {
+  return Capacitor.getPlatform() === 'android' ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api';
+}
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly settings = inject(SettingsService);
-
-  private get baseUrl(): string {
-    return this.settings.apiBaseUrl().replace(/\/+$/, '');
-  }
+  private readonly baseUrl = defaultApiBaseUrl().replace(/\/+$/, '');
 
   async health(): Promise<{ status: string; time: string }> {
     return firstValueFrom(
