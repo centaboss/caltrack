@@ -17,7 +17,6 @@ import {
   IonToolbar,
 } from '@ionic/angular';
 
-import { ApiService } from '../core/services/api.service';
 import { EntryService } from '../core/services/entry.service';
 import { FeedbackService } from '../core/services/feedback.service';
 import { SettingsService } from '../core/services/settings.service';
@@ -46,7 +45,6 @@ import { SettingsService } from '../core/services/settings.service';
 export class SettingsPage {
   readonly settings = inject(SettingsService);
   readonly entryService = inject(EntryService);
-  private readonly api = inject(ApiService);
   private readonly feedback = inject(FeedbackService);
   private readonly alertController = inject(AlertController);
   private readonly fb = inject(FormBuilder);
@@ -61,7 +59,6 @@ export class SettingsPage {
     carbsGoal: [200, [Validators.required, Validators.min(0), Validators.max(1000)]],
     fatGoal: [67, [Validators.required, Validators.min(0), Validators.max(1000)]],
     waterGoal: [2000, [Validators.required, Validators.min(500), Validators.max(8000)]],
-    apiBaseUrl: ['', [Validators.required]],
     hapticsEnabled: [true],
   });
 
@@ -77,7 +74,6 @@ export class SettingsPage {
       carbsGoal: this.settings.carbsGoal(),
       fatGoal: this.settings.fatGoal(),
       waterGoal: this.settings.waterGoal(),
-      apiBaseUrl: this.settings.apiBaseUrl(),
       hapticsEnabled: this.settings.hapticsEnabled(),
     });
   }
@@ -92,45 +88,17 @@ export class SettingsPage {
     }
   }
 
-  async resetApi(): Promise<void> {
-    await this.settings.resetApiBaseUrl();
-    this.form.controls.apiBaseUrl.setValue(this.settings.apiBaseUrl());
-    this.showToast('API URL reset to default', 'medium');
-  }
-
-  async testConnection(): Promise<void> {
-    try {
-      await this.persistForm();
-      await this.api.health();
-      void this.feedback.success();
-      this.showToast('Connected to the CalTrack API', 'success');
-    } catch {
-      this.showToast('Could not reach the API. Check the URL and server.', 'danger');
-    }
-  }
-
-  async syncNow(): Promise<void> {
-    if (this.entryService.syncing()) return;
-    const result = await this.entryService.sync();
-    if (result.ok) {
-      void this.feedback.success();
-      this.showToast('Synced with the server', 'success');
-    } else {
-      this.showToast(result.message ?? 'Sync failed', 'warning');
-    }
-  }
-
-  async clearCache(): Promise<void> {
+  async clearLocalData(): Promise<void> {
     const alert = await this.alertController.create({
-      header: 'Clear local cache?',
-      message: 'Entries saved on this device will be removed. The next sync will download them again from the server.',
+      header: 'Clear local data?',
+      message: 'All meals and entries stored on this device will be permanently removed.',
       buttons: [
         { text: 'Cancel', role: 'cancel' },
         {
           text: 'Clear',
           role: 'destructive',
           handler: () => {
-            void this.clearLocalCache();
+            void this.performClearLocalData();
           },
         },
       ],
@@ -138,10 +106,10 @@ export class SettingsPage {
     await alert.present();
   }
 
-  private async clearLocalCache(): Promise<void> {
+  private async performClearLocalData(): Promise<void> {
     await this.entryService.clearLocalData();
     void this.feedback.warning();
-    this.showToast('Local cache cleared', 'medium');
+    this.showToast('Local data cleared', 'medium');
   }
 
   private async persistForm(): Promise<void> {

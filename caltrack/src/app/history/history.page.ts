@@ -67,7 +67,6 @@ export class HistoryPage {
 
   private async refresh(): Promise<void> {
     await this.entryService.init();
-    await this.entryService.sync();
   }
 
   onPeriodChange(event: CustomEvent<{ value?: string | number | null }>): void {

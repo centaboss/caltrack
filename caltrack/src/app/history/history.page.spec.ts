@@ -39,12 +39,10 @@ describe('HistoryPage', () => {
   const entryService = {
     entries: signal<FoodEntry[]>([entry()]),
     init: vi.fn().mockResolvedValue(undefined),
-    sync: vi.fn().mockResolvedValue({ ok: true }),
   };
 
   const settings = {
     dailyGoal: signal(2000),
-    apiBaseUrl: signal('http://localhost:3000/api'),
     hapticsEnabled: signal(true),
     ready: Promise.resolve(),
   };

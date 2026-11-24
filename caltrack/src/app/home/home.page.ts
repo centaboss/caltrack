@@ -2,7 +2,6 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   AlertController,
-  IonBadge,
   IonButton,
   IonButtons,
   IonChip,
@@ -42,7 +41,6 @@ import { friendlyDate, longDate, shiftDateKey, timeLabel, todayKey } from '../co
   styleUrls: ['home.page.scss'],
   imports: [
     EntryFormComponent,
-    IonBadge,
     IonButton,
     IonButtons,
     IonChip,
@@ -93,27 +91,13 @@ export class HomePage {
     Math.min(100, Math.round((this.totals().calories / Math.max(1, this.goal())) * 100)),
   );
   readonly ringGradient = computed(
-    () => `conic-gradient(var(--ion-color-primary) ${this.progressPercent()}%, rgba(255, 255, 255, 0.16) 0)`,
+    () => `conic-gradient(var(--ion-color-calories) ${this.progressPercent()}%, rgba(255, 255, 255, 0.16) 0)`,
   );
   readonly friendly = computed(() => friendlyDate(this.selectedDate()));
   readonly long = computed(() => longDate(this.selectedDate()));
   readonly isToday = computed(() => this.selectedDate() === todayKey());
   readonly remainingLabel = computed(() => (this.remaining() >= 0 ? 'Calories remaining' : 'Over your target'));
   readonly remainingValue = computed(() => Math.abs(this.remaining()));
-  readonly syncLabel = computed(() => {
-    if (this.entryService.syncing()) return 'Syncing';
-    const pending = this.entryService.pendingCount();
-    if (pending > 0) return `${pending} waiting to sync`;
-    return 'Synced';
-  });
-  readonly syncColor = computed(() =>
-    this.entryService.syncing() || this.entryService.pendingCount() > 0 ? 'warning' : 'success',
-  );
-  readonly syncIcon = computed(() =>
-    this.entryService.syncing() || this.entryService.pendingCount() > 0
-      ? 'cloud-offline-outline'
-      : 'cloud-done-outline',
-  );
   readonly macroStats = computed(() => {
     const totals = this.totals();
     return [
@@ -156,10 +140,6 @@ export class HomePage {
 
   private async bootstrap(): Promise<void> {
     await this.entryService.init();
-    const result = await this.entryService.sync();
-    if (!result.ok && this.entryService.pendingCount() > 0) {
-      this.showToast(result.message ?? 'Working offline', 'warning');
-    }
   }
 
   mealEntries(meal: MealType): FoodEntry[] {
@@ -309,17 +289,6 @@ export class HomePage {
     }
     void this.feedback.warning();
     this.showToast('Meal deleted', 'medium');
-  }
-
-  async syncNow(): Promise<void> {
-    if (this.entryService.syncing()) return;
-    const result = await this.entryService.sync();
-    if (result.ok) {
-      void this.feedback.success();
-      this.showToast('Synced with the server', 'success');
-    } else {
-      this.showToast(result.message ?? 'Sync failed', 'warning');
-    }
   }
 
   photoUrl(photo: string): string | null {

@@ -76,13 +76,14 @@ ion-content {
   font-size: 1.7rem;
   font-weight: 800;
   line-height: 1;
+  color: #ffe0b2;
 }
 
 .ring-label {
   margin-top: 4px;
   font-size: 0.62rem;
   letter-spacing: 0.04em;
-  color: #ffe0b2;
+  color: #ffcc80;
 }
 
 .summary-copy {
@@ -156,14 +157,8 @@ ion-content {
 .status-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin: 4px 0 14px;
-}
-
-.sync-chip {
-  height: 28px;
-  font-size: 0.7rem;
-  --background: rgba(46, 125, 50, 0.1);
 }
 
 .entry-count {
@@ -575,12 +570,4 @@ ion-fab-button {
   --box-shadow: 0 10px 24px rgba(46, 125, 50, 0.35);
 }
 
-.spin {
-  animation: spin 1s linear infinite;
-}
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}

@@ -20,10 +20,7 @@ describe('HomePage', () => {
   const entryService = {
     entries: signal([]),
     loading: signal(false),
-    syncing: signal(false),
-    pendingCount: signal(0),
     init: vi.fn().mockResolvedValue(undefined),
-    sync: vi.fn().mockResolvedValue({ ok: true }),
     totalsForDate: vi.fn().mockReturnValue({
       calories: 0,
       protein: 0,
@@ -43,7 +40,6 @@ describe('HomePage', () => {
     carbsGoal: signal(200),
     fatGoal: signal(67),
     waterGoal: signal(2000),
-    apiBaseUrl: signal('http://localhost:3000/api'),
     hapticsEnabled: signal(true),
     ready: Promise.resolve(),
   };

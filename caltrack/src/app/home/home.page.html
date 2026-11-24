@@ -5,9 +5,6 @@
       <ion-button (click)="openHistory()" aria-label="Insights">
         <ion-icon slot="icon-only" name="bar-chart-outline"></ion-icon>
       </ion-button>
-      <ion-button (click)="syncNow()" [disabled]="entryService.syncing()" aria-label="Sync now">
-        <ion-icon slot="icon-only" name="sync-outline" [class.spin]="entryService.syncing()"></ion-icon>
-      </ion-button>
       <ion-button (click)="openSettings()" aria-label="Settings">
         <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
       </ion-button>
@@ -73,11 +70,7 @@
   </div>
 
   <div class="status-row">
-    <ion-chip [color]="syncColor()" class="sync-chip" (click)="syncNow()">
-      <ion-icon [name]="syncIcon()"></ion-icon>
-      <ion-label>{{ syncLabel() }}</ion-label>
-    </ion-chip>
-    <span class="entry-count">{{ totals().count }} meals</span>
+    <span class="entry-count">{{ totals().count }} meals logged</span>
   </div>
 
   <section class="macro-card">
@@ -195,7 +188,13 @@
             </p>
           </ion-label>
           <div slot="end" class="entry-end">
-            <div class="entry-actions" (click)="$event.stopPropagation()">
+            <div
+              class="entry-actions"
+              role="group"
+              tabindex="0"
+              (click)="$event.stopPropagation()"
+              (keydown)="$event.stopPropagation()"
+            >
               <div class="qty-control">
                 <ion-button fill="clear" size="small" class="qty-btn" (click)="decrementEntry(entry)" aria-label="Decrease portion">
                   <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
@@ -211,9 +210,6 @@
             </div>
             <div class="entry-meta">
               <ion-note>{{ time(entry.consumedAt) }}</ion-note>
-              @if (!entry.synced) {
-              <ion-badge color="warning">Offline</ion-badge>
-              }
             </div>
           </div>
         </ion-item>

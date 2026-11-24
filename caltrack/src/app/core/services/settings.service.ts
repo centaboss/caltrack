@@ -1,5 +1,4 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { Capacitor } from '@capacitor/core';
 
 import { StorageService } from './storage.service';
 
@@ -11,7 +10,6 @@ export interface AppSettings {
   carbsGoal: number;
   fatGoal: number;
   waterGoal: number;
-  apiBaseUrl: string;
   hapticsEnabled: boolean;
 }
 
@@ -23,10 +21,6 @@ const DEFAULT_GOALS = {
   waterGoal: 2000,
 };
 
-function defaultApiBaseUrl(): string {
-  return Capacitor.getPlatform() === 'android' ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api';
-}
-
 @Injectable({ providedIn: 'root' })
 export class SettingsService {
   private readonly storage = inject(StorageService);
@@ -36,7 +30,6 @@ export class SettingsService {
   readonly carbsGoal = signal(DEFAULT_GOALS.carbsGoal);
   readonly fatGoal = signal(DEFAULT_GOALS.fatGoal);
   readonly waterGoal = signal(DEFAULT_GOALS.waterGoal);
-  readonly apiBaseUrl = signal(defaultApiBaseUrl());
   readonly hapticsEnabled = signal(true);
   readonly ready: Promise<void>;
 
@@ -47,9 +40,6 @@ export class SettingsService {
   private async load(): Promise<void> {
     const stored = await this.storage.get<Partial<AppSettings>>(SETTINGS_KEY, {});
     this.applyNumeric(stored);
-    if (typeof stored.apiBaseUrl === 'string' && stored.apiBaseUrl.trim()) {
-      this.apiBaseUrl.set(stored.apiBaseUrl.trim().replace(/\/+$/, ''));
-    }
     if (typeof stored.hapticsEnabled === 'boolean') {
       this.hapticsEnabled.set(stored.hapticsEnabled);
     }
@@ -57,9 +47,6 @@ export class SettingsService {
 
   async save(settings: Partial<AppSettings>): Promise<void> {
     this.applyNumeric(settings);
-    if (typeof settings.apiBaseUrl === 'string' && settings.apiBaseUrl.trim()) {
-      this.apiBaseUrl.set(settings.apiBaseUrl.trim().replace(/\/+$/, ''));
-    }
     if (typeof settings.hapticsEnabled === 'boolean') {
       this.hapticsEnabled.set(settings.hapticsEnabled);
     }
@@ -84,11 +71,6 @@ export class SettingsService {
     }
   }
 
-  async resetApiBaseUrl(): Promise<void> {
-    this.apiBaseUrl.set(defaultApiBaseUrl());
-    await this.persist();
-  }
-
   private async persist(): Promise<void> {
     await this.storage.set<AppSettings>(SETTINGS_KEY, {
       dailyGoal: this.dailyGoal(),
@@ -96,7 +78,6 @@ export class SettingsService {
       carbsGoal: this.carbsGoal(),
       fatGoal: this.fatGoal(),
       waterGoal: this.waterGoal(),
-      apiBaseUrl: this.apiBaseUrl(),
       hapticsEnabled: this.hapticsEnabled(),
     });
   }

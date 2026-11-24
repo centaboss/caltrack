@@ -73,45 +73,17 @@
 
     <section class="settings-card">
       <div class="card-heading">
-        <ion-icon name="cloud-done-outline"></ion-icon>
-        <div>
-          <h2>REST API</h2>
-          <p>Use your computer's LAN IP when testing on a physical Android device.</p>
-        </div>
-      </div>
-      <ion-input
-        formControlName="apiBaseUrl"
-        label="API base URL"
-        labelPlacement="floating"
-        fill="outline"
-        placeholder="http://192.168.1.10:3000/api"
-      ></ion-input>
-      <div class="button-row">
-        <ion-button size="small" fill="outline" (click)="resetApi()">Reset default</ion-button>
-        <ion-button size="small" fill="outline" (click)="testConnection()">
-          <ion-icon slot="start" name="sync-outline"></ion-icon>
-          Test
-        </ion-button>
-      </div>
-    </section>
-
-    <section class="settings-card">
-      <div class="card-heading">
         <ion-icon name="barbell-outline"></ion-icon>
         <div>
-          <h2>Device & data</h2>
-          <p>Haptics and offline sync controls.</p>
+          <h2>Device &amp; data</h2>
+          <p>Manage feedback and local entries stored on this device.</p>
         </div>
       </div>
       <ion-item lines="none" class="toggle-item">
         <ion-label>Vibration feedback</ion-label>
         <ion-toggle formControlName="hapticsEnabled"></ion-toggle>
       </ion-item>
-      <div class="sync-info">
-        <span>{{ entryService.pendingCount() }} pending changes</span>
-        <ion-button size="small" (click)="syncNow()" [disabled]="entryService.syncing()"> Sync now </ion-button>
-      </div>
-      <ion-button expand="block" color="danger" fill="outline" (click)="clearCache()"> Clear local cache </ion-button>
+      <ion-button expand="block" color="danger" fill="outline" (click)="clearLocalData()">Clear local data</ion-button>
     </section>
 
     <section class="settings-card about">
@@ -119,12 +91,12 @@
         <ion-icon name="camera-outline"></ion-icon>
         <div>
           <h2>About CalTrack</h2>
-          <p>Camera-based calorie tracking with offline storage and REST sync.</p>
+          <p>Camera-based calorie tracking with local storage.</p>
         </div>
       </div>
       <p class="about-copy">
-        Built with Ionic Angular and Capacitor. Photos use the native camera, are stored with the Filesystem plugin, and
-        haptics provide vibration feedback. Entries are cached locally and synchronized with the CalTrack REST API.
+        Built with Ionic Angular and Capacitor. Photos use the native camera and are stored on this device. Entries are
+        saved locally for quick, offline-first tracking.
       </p>
     </section>
 
