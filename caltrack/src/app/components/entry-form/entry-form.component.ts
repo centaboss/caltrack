@@ -1,5 +1,6 @@
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import type { SafeUrl } from '@angular/platform-browser';
 import {
   IonButton,
   IonButtons,
@@ -225,7 +226,7 @@ export class EntryFormComponent {
     this.cancelled.emit();
   }
 
-  displayUrl(photo: string | null): string | null {
+  displayUrl(photo: string | null): SafeUrl | string | null {
     return this.camera.displayUrl(photo);
   }
 

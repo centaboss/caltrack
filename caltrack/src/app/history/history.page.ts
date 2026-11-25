@@ -65,6 +65,10 @@ export class HistoryPage {
     void this.refresh();
   }
 
+  ionViewWillEnter(): void {
+    void this.refresh();
+  }
+
   private async refresh(): Promise<void> {
     await this.entryService.init();
   }

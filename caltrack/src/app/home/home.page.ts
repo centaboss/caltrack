@@ -1,4 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import type { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   AlertController,
@@ -124,6 +125,10 @@ export class HomePage {
   constructor() {
     void this.bootstrap();
     this.openFormFromNavigation();
+  }
+
+  ionViewWillEnter(): void {
+    void this.bootstrap();
   }
 
   private openFormFromNavigation(): void {
@@ -291,7 +296,7 @@ export class HomePage {
     this.showToast('Meal deleted', 'medium');
   }
 
-  photoUrl(photo: string): string | null {
+  photoUrl(photo: string): SafeUrl | string | null {
     return this.camera.displayUrl(photo);
   }
 

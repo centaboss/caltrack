@@ -66,6 +66,10 @@ export class SettingsPage {
     void this.load();
   }
 
+  ionViewWillEnter(): void {
+    void this.load();
+  }
+
   private async load(): Promise<void> {
     await this.settings.ready;
     this.form.setValue({

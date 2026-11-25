@@ -78,6 +78,7 @@ export class EntryService {
   }
 
   async create(draft: FoodEntryDraft): Promise<FoodEntry> {
+    await this.init();
     const now = new Date().toISOString();
     const entry: FoodEntry = normalize({
       ...draft,
@@ -99,6 +100,7 @@ export class EntryService {
   }
 
   async update(id: string, draft: FoodEntryDraft): Promise<void> {
+    await this.init();
     const now = new Date().toISOString();
     this.entries.update((entries) =>
       entries
@@ -124,6 +126,7 @@ export class EntryService {
   }
 
   async remove(id: string): Promise<void> {
+    await this.init();
     const entry = this.entries().find((item) => item.id === id);
     if (!entry) return;
 
@@ -132,6 +135,7 @@ export class EntryService {
   }
 
   async incrementServings(id: string): Promise<void> {
+    await this.init();
     const entry = this.entries().find((item) => item.id === id);
     if (!entry) return;
 
@@ -156,6 +160,7 @@ export class EntryService {
   }
 
   async decrementServings(id: string): Promise<void> {
+    await this.init();
     const entry = this.entries().find((item) => item.id === id);
     if (!entry) return;
 
@@ -185,6 +190,7 @@ export class EntryService {
   }
 
   async clearLocalData(): Promise<void> {
+    await this.init();
     this.entries.set([]);
     await this.persist();
   }
